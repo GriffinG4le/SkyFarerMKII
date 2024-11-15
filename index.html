@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SkyFarer MK II - Revolutionary Aviation Planning</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+</head>
+<body>
+    <header>
+        <nav class="navbar">
+            <a href="index.html" class="logo">SkyFarer</a>
+            <div class="nav-links">
+                <a href="index.html">Home</a>
+                <a href="mission.html">Mission</a>
+                <a href="contact.html">Contact</a>
+            </div>
+            <div class="right-nav">
+                <a href="#support" class="nav-icon" title="Support">
+                    <i class="fa-regular fa-circle-question"></i>
+                </a>
+                <a href="#account" class="nav-icon" title="Account">
+                    <i class="fa-regular fa-circle-user"></i>
+                </a>
+            </div>
+        </nav>
+    </header>
+
+    <style>
+        .navbar {
+            display: flex;
+            align-items: center;
+            padding: 1rem 2rem;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            position: fixed;
+            width: 100%;
+            top: 0;
+            box-sizing: border-box;
+        }
+
+        .logo {
+            position: absolute;
+            left: 2rem;
+            font-size: 1.5rem;
+            font-weight: 700;
+            text-decoration: none !important;
+            color: var(--text-color, #171a20);
+        }
+
+        .nav-links {
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 2.5rem;
+            align-items: center;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: var(--text-color, #171a20);
+            font-weight: 500;
+            font-size: 0.95rem;
+            transition: color 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .nav-links a:hover {
+            color: var(--accent-color, #666);
+        }
+
+        .right-nav {
+            position: absolute;
+            right: 2rem;
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+        }
+
+        .nav-icon {
+            color: var(--text-color, #171a20);
+            font-size: 1.25rem;
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        .nav-icon:hover {
+            color: var(--accent-color, #666);
+        }
+
+        /* For dark mode support */
+        @media (prefers-color-scheme: dark) {
+            .navbar {
+                background: rgba(23, 26, 32, 0.95);
+            }
+            
+            .nav-links a,
+            .nav-icon,
+            .logo {
+                color: var(--text-color-dark, #fff);
+            }
+        }
+
+        /* Responsive adjustments */
+        @media (max-width: 768px) {
+            .logo {
+                left: 1rem;
+            }
+            
+            .nav-links {
+                gap: 1rem;
+            }
+            
+            .right-nav {
+                right: 1rem;
+            }
+        }
+    </style>
+
+    <main>
+        <section id="hero">
+            <div class="hero-content">
+                <h1>Revolutionizing Aviation Planning</h1>
+                <p>Experience the future of private aviation with our cutting-edge fleet selection platform</p>
+                <div class="cta-buttons">
+                    <button class="cta-primary" onclick="window.location.href='3d-model.html'">Explore Fleet</button>
+                    <button class="cta-secondary" onclick="window.location.href='purchase.html'">Start Your Journey</button>
+                </div>
+            </div>
+        </section>
+
+        <section id="features">
+            <h2>Why Choose SkyFarer</h2>
+            <div class="features-grid">
+                <div class="feature-card" onclick="window.location.href='3d-model.html'" style="cursor: pointer;">
+                    <div class="feature-icon">🛩️</div>
+                    <h3>3D Fleet Explorer</h3>
+                    <p>Interactive 3D models of our entire fleet</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">🗺️</div>
+                    <h3>Route Planning</h3>
+                    <p>Advanced flight path mapping and optimization</p>
+                </div>
+                <div class="feature-card" onclick="window.location.href='purchase.html'" style="cursor: pointer;">
+                    <div class="feature-icon">💰</div>
+                    <h3>Buy Your Jet</h3>
+                    <p>Seamless purchasing process with expert guidance</p>
+                </div>
+            </div>
+        </section>
+    </main>
+    <footer>
+        <div class="footer-content">
+            <p class="copyright">&copy; 2024 Gale Industries. All rights reserved.</p>
+            <div class="footer-links">
+                <a href="#privacy">Privacy</a>
+                <a href="#terms">Terms</a>
+                <a href="faq.html">FAQ</a>
+                <a href="#contact">Contact</a>
+            </div>
+        </div>
+    </footer>
+
+    <style>
+        footer {
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            padding: 1rem 2rem;
+            box-sizing: border-box;
+            border-top: 1px solid rgba(0, 0, 0, 0.1);
+        }
+
+        .footer-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .copyright {
+            font-size: 0.9rem;
+            color: var(--text-color, #171a20);
+            margin: 0;
+        }
+
+        .footer-links {
+            display: flex;
+            gap: 2rem;
+        }
+
+        .footer-links a {
+            color: var(--text-color, #171a20);
+            text-decoration: none;
+            font-size: 0.9rem;
+            transition: color 0.3s ease;
+        }
+
+        .footer-links a:hover {
+            color: var(--accent-color, #666);
+        }
+
+        /* Dark mode support */
+        @media (prefers-color-scheme: dark) {
+            footer {
+                background: rgba(23, 26, 32, 0.95);
+                border-top: 1px solid rgba(255, 255, 255, 0.1);
+            }
+
+            .copyright,
+            .footer-links a {
+                color: var(--text-color-dark, #fff);
+            }
+        }
+
+        /* Responsive adjustments */
+        @media (max-width: 768px) {
+            footer {
+                padding: 0.75rem 1rem;
+            }
+
+            .footer-content {
+                flex-direction: column;
+                gap: 0.5rem;
+                text-align: center;
+            }
+
+            .footer-links {
+                gap: 1rem;
+            }
+        }
+    </style>
+
+    <script src="script.js"></script>
+</body>
+</html> 

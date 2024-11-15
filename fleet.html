@@ -1,0 +1,391 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SkyFarer MK II - Fleet Explorer</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+</head>
+<body>
+    <!-- Navbar (same as index.html) -->
+    <header>
+        <nav class="navbar">
+            <a href="index.html" class="logo">SkyFarer</a>
+            <div class="nav-links">
+                <a href="index.html">Home</a>
+                <a href="fleet.html">Fleet</a>
+                <a href="mission.html">Mission</a>
+                <a href="contact.html">Contact</a>
+            </div>
+            <div class="right-nav">
+                <a href="#support" class="nav-icon" title="Support">
+                    <i class="fa-regular fa-circle-question"></i>
+                </a>
+                <a href="#account" class="nav-icon" title="Account">
+                    <i class="fa-regular fa-circle-user"></i>
+                </a>
+            </div>
+        </nav>
+    </header>
+
+    <main class="fleet-page">
+        <section class="fleet-hero">
+            <h1>Our Fleet</h1>
+            <div class="fleet-filters">
+                <div class="search-bar">
+                    <i class="fas fa-search"></i>
+                    <input type="text" placeholder="Search aircraft...">
+                </div>
+                <div class="filter-options">
+                    <select name="range">
+                        <option value="">Flight Range</option>
+                        <option value="short">Short Range</option>
+                        <option value="medium">Medium Range</option>
+                        <option value="long">Long Range</option>
+                    </select>
+                    <select name="capacity">
+                        <option value="">Passenger Capacity</option>
+                        <option value="small">4-8 Passengers</option>
+                        <option value="medium">8-12 Passengers</option>
+                        <option value="large">12+ Passengers</option>
+                    </select>
+                    <select name="budget">
+                        <option value="">Budget Range</option>
+                        <option value="economy">Economy</option>
+                        <option value="business">Business</option>
+                        <option value="luxury">Luxury</option>
+                    </select>
+                </div>
+            </div>
+        </section>
+
+        <section class="fleet-grid">
+            <div class="aircraft-card">
+                <div class="aircraft-image">
+                    <img src="placeholder-jet1.jpg" alt="Private Jet">
+                </div>
+                <div class="aircraft-info">
+                    <h3>Gulfstream G650</h3>
+                    <p class="specs">Range: 7,000 nm | Passengers: 19 | Speed: 516 mph</p>
+                    <button class="view-details">View Details</button>
+                </div>
+            </div>
+            <!-- More aircraft cards... -->
+        </section>
+    </main>
+
+    <!-- Footer (same as index.html) -->
+    <footer>
+        <div class="footer-content">
+            <p class="copyright">&copy; 2024 Gale Industries. All rights reserved.</p>
+            <div class="footer-links">
+                <a href="#privacy">Privacy</a>
+                <a href="#terms">Terms</a>
+                <a href="faq.html">FAQ</a>
+                <a href="contact.html">Contact</a>
+            </div>
+        </div>
+    </footer>
+
+    <style>
+        /* Fleet page specific styles */
+        .fleet-page {
+            padding-top: 80px;
+            padding-bottom: 80px;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .fleet-hero {
+            text-align: center;
+            padding: 3rem 2rem;
+        }
+
+        .fleet-hero h1 {
+            font-size: 3rem;
+            margin-bottom: 2rem;
+        }
+
+        .fleet-filters {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .search-bar {
+            position: relative;
+            margin-bottom: 1.5rem;
+        }
+
+        .search-bar input {
+            width: 100%;
+            padding: 1rem 3rem;
+            border-radius: 50px;
+            border: 1px solid rgba(0, 0, 0, 0.1);
+            font-size: 1rem;
+        }
+
+        .search-bar i {
+            position: absolute;
+            left: 1.2rem;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #666;
+        }
+
+        .filter-options {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+        }
+
+        .filter-options select {
+            padding: 0.8rem 1.5rem;
+            border-radius: 25px;
+            border: 1px solid rgba(0, 0, 0, 0.1);
+            background: white;
+            font-size: 0.9rem;
+            cursor: pointer;
+        }
+
+        .fleet-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            padding: 2rem;
+        }
+
+        .aircraft-card {
+            background: white;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease;
+        }
+
+        .aircraft-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .aircraft-image {
+            height: 200px;
+            background: #f5f5f5;
+        }
+
+        .aircraft-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .aircraft-info {
+            padding: 1.5rem;
+        }
+
+        .aircraft-info h3 {
+            margin: 0 0 0.5rem 0;
+            font-size: 1.2rem;
+        }
+
+        .specs {
+            font-size: 0.9rem;
+            color: #666;
+            margin-bottom: 1rem;
+        }
+
+        .view-details {
+            width: 100%;
+            padding: 0.8rem;
+            background: #171a20;
+            color: white;
+            border: none;
+            border-radius: 25px;
+            cursor: pointer;
+            transition: background 0.3s ease;
+        }
+
+        .view-details:hover {
+            background: #2c3e50;
+        }
+
+        /* Dark mode support */
+        @media (prefers-color-scheme: dark) {
+            .aircraft-card {
+                background: #1a1a1a;
+            }
+
+            .filter-options select,
+            .search-bar input {
+                background: #1a1a1a;
+                color: white;
+                border-color: rgba(255, 255, 255, 0.1);
+            }
+
+            .specs {
+                color: #999;
+            }
+
+            .view-details {
+                background: #fff;
+                color: #171a20;
+            }
+
+            .view-details:hover {
+                background: #ccc;
+            }
+        }
+
+        /* Responsive adjustments */
+        @media (max-width: 768px) {
+            .filter-options {
+                flex-direction: column;
+            }
+
+            .fleet-hero h1 {
+                font-size: 2rem;
+            }
+
+            .fleet-grid {
+                padding: 1rem;
+            }
+        }
+
+        .logo {
+            position: absolute;
+            left: 2rem;
+            font-size: 1.5rem;
+            font-weight: 700;
+            text-decoration: none !important;
+            color: var(--text-color, #171a20);
+        }
+
+        /* Navbar styling */
+        .navbar {
+            display: flex;
+            align-items: center;
+            padding: 1rem 2rem;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            position: fixed;
+            width: 100%;
+            top: 0;
+            box-sizing: border-box;
+            z-index: 1000;
+        }
+
+        .nav-links {
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 2.5rem;
+            align-items: center;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: var(--text-color, #171a20);
+            font-weight: 500;
+            font-size: 0.95rem;
+            transition: color 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .right-nav {
+            position: absolute;
+            right: 2rem;
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+        }
+
+        .nav-icon {
+            color: var(--text-color, #171a20);
+            font-size: 1.25rem;
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        /* Footer styling */
+        footer {
+            position: relative;
+            width: 100%;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            padding: 1.5rem 2rem;
+            box-sizing: border-box;
+            border-top: 1px solid rgba(0, 0, 0, 0.1);
+            margin-top: 4rem;
+        }
+
+        .footer-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .copyright {
+            font-size: 0.9rem;
+            color: var(--text-color, #171a20);
+            margin: 0;
+        }
+
+        .footer-links {
+            display: flex;
+            gap: 2.5rem;
+        }
+
+        .footer-links a {
+            color: var(--text-color, #171a20);
+            text-decoration: none;
+            font-size: 0.9rem;
+            transition: color 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .footer-links a:hover {
+            color: var(--accent-color, #666);
+        }
+
+        /* Dark mode support */
+        @media (prefers-color-scheme: dark) {
+            footer {
+                background: rgba(23, 26, 32, 0.95);
+                border-top: 1px solid rgba(255, 255, 255, 0.1);
+            }
+
+            .copyright,
+            .footer-links a {
+                color: var(--text-color-dark, #fff);
+            }
+        }
+
+        /* Responsive adjustments */
+        @media (max-width: 768px) {
+            footer {
+                padding: 1rem;
+                margin-top: 2rem;
+            }
+
+            .footer-content {
+                flex-direction: column;
+                gap: 1rem;
+                text-align: center;
+            }
+
+            .footer-links {
+                gap: 1.5rem;
+            }
+        }
+    </style>
+
+    <script src="script.js"></script>
+</body>
+</html> 

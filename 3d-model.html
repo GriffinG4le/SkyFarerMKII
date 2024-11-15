@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SkyFarer MK II - 3D Fleet Explorer</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <script async src="https://unpkg.com/es-module-shims@1.8.0/dist/es-module-shims.js"></script>
+    <script type="importmap">
+    {
+        "imports": {
+            "three": "https://unpkg.com/three@0.156.1/build/three.module.js",
+            "three/addons/": "https://unpkg.com/three@0.156.1/examples/jsm/",
+            "three/examples/": "https://unpkg.com/three@0.156.1/examples/"
+        }
+    }
+    </script>
+</head>
+<body>
+    <header>
+        <nav class="navbar">
+            <a href="index.html" class="logo">SkyFarer</a>
+        </nav>
+    </header>
+
+    <main class="model-page">
+        <div id="model-container"></div>
+        <div class="model-info">
+            <h2>Gulfstream G650</h2>
+            <div class="specs-grid">
+                <div class="spec-item">
+                    <i class="fas fa-ruler-horizontal"></i>
+                    <span>Range</span>
+                    <strong>7,000 nm</strong>
+                </div>
+                <div class="spec-item">
+                    <i class="fas fa-users"></i>
+                    <span>Passengers</span>
+                    <strong>19</strong>
+                </div>
+                <div class="spec-item">
+                    <i class="fas fa-tachometer-alt"></i>
+                    <span>Speed</span>
+                    <strong>516 mph</strong>
+                </div>
+            </div>
+            <button class="inquire-btn">Inquire Now</button>
+        </div>
+    </main>
+
+    <style>
+        .navbar {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            padding: 1rem 2rem;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            z-index: 1000;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 700;
+            text-decoration: none !important;
+            color: var(--text-color, #171a20);
+            transition: color 0.3s ease;
+        }
+
+        .logo:hover {
+            color: var(--accent-color, #666);
+        }
+
+        .model-page {
+            height: 100vh; /* Full viewport height now */
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 2rem;
+            padding: 4rem 2rem 2rem 2rem; /* Increased top padding for logo */
+        }
+
+        #model-container {
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.05);
+            border-radius: 15px;
+        }
+
+        .model-info {
+            padding: 2rem;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .specs-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1.5rem;
+            margin: 2rem 0;
+        }
+
+        .spec-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            gap: 0.5rem;
+        }
+
+        .spec-item i {
+            font-size: 1.5rem;
+            color: #1a1a1a;
+        }
+
+        .spec-item span {
+            font-size: 0.9rem;
+            color: #666;
+        }
+
+        .spec-item strong {
+            font-size: 1.1rem;
+        }
+
+        .inquire-btn {
+            width: 100%;
+            padding: 1rem;
+            background: #1a1a1a;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: background 0.3s ease;
+        }
+
+        .inquire-btn:hover {
+            background: #333;
+        }
+
+        /* Dark mode support */
+        @media (prefers-color-scheme: dark) {
+            .navbar {
+                background: rgba(23, 26, 32, 0.95);
+            }
+            
+            .logo {
+                color: var(--text-color-dark, #fff);
+            }
+
+            .model-info {
+                background: #1a1a1a;
+                color: #fff;
+            }
+
+            .spec-item i {
+                color: #fff;
+            }
+
+            .spec-item span {
+                color: #ccc;
+            }
+
+            .inquire-btn {
+                background: #fff;
+                color: #1a1a1a;
+            }
+
+            .inquire-btn:hover {
+                background: #ccc;
+            }
+        }
+
+        /* Responsive adjustments */
+        @media (max-width: 768px) {
+            .model-page {
+                grid-template-columns: 1fr;
+                height: auto;
+                padding-top: 5rem;
+            }
+
+            #model-container {
+                height: 60vh;
+            }
+        }
+    </style>
+
+    <script type="module">
+        import * as THREE from 'three';
+        import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
+        import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
+
+        // Scene setup
+        const scene = new THREE.Scene();
+        const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+        const container = document.getElementById('model-container');
+        const renderer = new THREE.WebGLRenderer({ antialias: true });
+        
+        renderer.setSize(container.clientWidth, container.clientHeight);
+        container.appendChild(renderer.domElement);
+
+        // Lighting
+        const ambientLight = new THREE.AmbientLight(0xffffff, 0.5);
+        scene.add(ambientLight);
+
+        const directionalLight = new THREE.DirectionalLight(0xffffff, 1);
+        directionalLight.position.set(5, 5, 5);
+        scene.add(directionalLight);
+
+        // Controls
+        const controls = new OrbitControls(camera, renderer.domElement);
+        controls.enableDamping = true;
+        controls.dampingFactor = 0.05;
+
+        // Load 3D model
+        const loader = new GLTFLoader();
+        loader.load(
+            'path/to/your/aircraft.glb', // Replace with your model path
+            function (gltf) {
+                scene.add(gltf.scene);
+                // Position camera
+                camera.position.z = 5;
+            },
+            undefined,
+            function (error) {
+                console.error(error);
+            }
+        );
+
+        // Animation loop
+        function animate() {
+            requestAnimationFrame(animate);
+            controls.update();
+            renderer.render(scene, camera);
+        }
+        animate();
+
+        // Handle window resize
+        window.addEventListener('resize', onWindowResize, false);
+        function onWindowResize() {
+            camera.aspect = container.clientWidth / container.clientHeight;
+            camera.updateProjectionMatrix();
+            renderer.setSize(container.clientWidth, container.clientHeight);
+        }
+    </script>
+</body>
+</html> 

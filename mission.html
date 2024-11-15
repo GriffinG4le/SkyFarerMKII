@@ -1,0 +1,423 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SkyFarer MK II - Our Mission</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+</head>
+<body>
+    <!-- Same navbar as other pages -->
+    <header>
+        <nav class="navbar">
+            <a href="index.html" class="logo">SkyFarer</a>
+            <div class="nav-links">
+                <a href="index.html">Home</a>
+                <a href="3d-model.html">Fleet</a>
+                <a href="mission.html">Mission</a>
+                <a href="contact.html">Contact</a>
+            </div>
+            <div class="right-nav">
+                <a href="#support" class="nav-icon" title="Support">
+                    <i class="fa-regular fa-circle-question"></i>
+                </a>
+                <a href="#account" class="nav-icon" title="Account">
+                    <i class="fa-regular fa-circle-user"></i>
+                </a>
+            </div>
+        </nav>
+    </header>
+
+    <main class="mission-page">
+        <section class="mission-hero">
+            <h1>Our Mission</h1>
+            <p class="mission-statement">Revolutionizing private aviation through innovation, sustainability, and exceptional service.</p>
+        </section>
+
+        <section class="mission-values">
+            <div class="value-card">
+                <i class="fas fa-innovation"></i>
+                <h3>Innovation</h3>
+                <p>Pushing boundaries in aviation technology and service delivery.</p>
+            </div>
+            <div class="value-card">
+                <i class="fas fa-leaf"></i>
+                <h3>Sustainability</h3>
+                <p>Committed to reducing our environmental impact through eco-friendly practices.</p>
+            </div>
+            <div class="value-card">
+                <i class="fas fa-star"></i>
+                <h3>Excellence</h3>
+                <p>Delivering unparalleled service quality and safety standards.</p>
+            </div>
+        </section>
+
+        <section class="timeline">
+            <h2>Our Journey</h2>
+            <div class="timeline-grid">
+                <div class="timeline-item">
+                    <div class="year">2020</div>
+                    <h3>Foundation</h3>
+                    <p>SkyFarer was established with a vision to transform private aviation.</p>
+                </div>
+                <div class="timeline-item">
+                    <div class="year">2021</div>
+                    <h3>Innovation Launch</h3>
+                    <p>Introduced our revolutionary 3D fleet explorer technology.</p>
+                </div>
+                <div class="timeline-item">
+                    <div class="year">2022</div>
+                    <h3>Global Expansion</h3>
+                    <p>Extended our services to major international markets.</p>
+                </div>
+                <div class="timeline-item">
+                    <div class="year">2023</div>
+                    <h3>Sustainability Initiative</h3>
+                    <p>Launched our eco-friendly aviation program.</p>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Same footer as other pages -->
+    <footer>
+        <div class="footer-content">
+            <p class="copyright">&copy; 2024 Gale Industries. All rights reserved.</p>
+            <div class="footer-links">
+                <a href="#privacy">Privacy</a>
+                <a href="#terms">Terms</a>
+                <a href="#contact">Contact</a>
+            </div>
+        </div>
+    </footer>
+
+    <style>
+        .mission-page {
+            padding-top: 80px;
+            min-height: 100vh;
+            background: #f8f9fa;
+        }
+
+        .mission-hero {
+            text-align: center;
+            padding: 6rem 2rem 4rem;
+            background: linear-gradient(45deg, rgba(255,255,255,0.9), rgba(255,255,255,0.95));
+            backdrop-filter: blur(10px);
+            margin: 0 2rem 4rem;
+            border-radius: 20px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+        }
+
+        .mission-hero h1 {
+            font-size: 4rem;
+            margin-bottom: 1.5rem;
+            background: linear-gradient(45deg, #1a1a1a, #4a4a4a);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .mission-statement {
+            font-size: 1.5rem;
+            max-width: 800px;
+            margin: 0 auto;
+            color: #666;
+            line-height: 1.6;
+        }
+
+        .mission-values {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            padding: 2rem;
+            max-width: 1400px;
+            margin: 0 auto 4rem;
+        }
+
+        .value-card {
+            text-align: center;
+            padding: 3rem 2rem;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .value-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+        }
+
+        .value-card i {
+            font-size: 2.5rem;
+            margin-bottom: 1.5rem;
+            color: #1a1a1a;
+            background: linear-gradient(45deg, #1a1a1a, #4a4a4a);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .value-card h3 {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+            color: #1a1a1a;
+        }
+
+        .value-card p {
+            color: #666;
+            line-height: 1.6;
+        }
+
+        .timeline {
+            padding: 4rem 2rem;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .timeline h2 {
+            text-align: center;
+            font-size: 2.5rem;
+            margin-bottom: 3rem;
+            background: linear-gradient(45deg, #1a1a1a, #4a4a4a);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .timeline-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+        }
+
+        .timeline-item {
+            text-align: center;
+            padding: 2rem;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease;
+        }
+
+        .timeline-item:hover {
+            transform: translateY(-5px);
+        }
+
+        .year {
+            font-size: 2rem;
+            font-weight: 700;
+            color: #1a1a1a;
+            margin-bottom: 1rem;
+            background: linear-gradient(45deg, #1a1a1a, #4a4a4a);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        /* Dark mode support */
+        @media (prefers-color-scheme: dark) {
+            .mission-page {
+                background: #121212;
+            }
+
+            .mission-hero {
+                background: linear-gradient(45deg, rgba(26,26,26,0.9), rgba(26,26,26,0.95));
+            }
+
+            .mission-hero h1,
+            .timeline h2,
+            .year,
+            .value-card i {
+                background: linear-gradient(45deg, #fff, #ccc);
+                -webkit-background-clip: text;
+                -webkit-text-fill-color: transparent;
+            }
+
+            .mission-statement,
+            .value-card p {
+                color: #ccc;
+            }
+
+            .value-card,
+            .timeline-item {
+                background: #1a1a1a;
+            }
+
+            .value-card h3 {
+                color: #fff;
+            }
+        }
+
+        /* Responsive adjustments */
+        @media (max-width: 768px) {
+            .mission-hero {
+                padding: 4rem 1rem 2rem;
+                margin: 0 1rem 2rem;
+            }
+
+            .mission-hero h1 {
+                font-size: 2.5rem;
+            }
+
+            .mission-statement {
+                font-size: 1.2rem;
+            }
+
+            .mission-values,
+            .timeline {
+                padding: 1rem;
+            }
+
+            .value-card {
+                padding: 2rem 1.5rem;
+            }
+        }
+
+        .logo {
+            position: absolute;
+            left: 2rem;
+            font-size: 1.5rem;
+            font-weight: 700;
+            text-decoration: none !important;
+            color: var(--text-color, #171a20);
+        }
+
+        /* Update the navbar styling */
+        .navbar {
+            display: flex;
+            align-items: center;
+            padding: 1rem 2rem;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            position: fixed;
+            width: 100%;
+            top: 0;
+            box-sizing: border-box;
+            z-index: 1000;
+        }
+
+        .nav-links {
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 2.5rem;
+            align-items: center;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: var(--text-color, #171a20);
+            font-weight: 500;
+            font-size: 0.95rem;
+            transition: color 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .right-nav {
+            position: absolute;
+            right: 2rem;
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+        }
+
+        .nav-icon {
+            color: var(--text-color, #171a20);
+            font-size: 1.25rem;
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        /* Update the footer styling */
+        footer {
+            position: relative;
+            width: 100%;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            padding: 1rem 2rem;
+            box-sizing: border-box;
+            border-top: 1px solid rgba(0, 0, 0, 0.1);
+        }
+
+        .footer-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .copyright {
+            font-size: 0.9rem;
+            color: var(--text-color, #171a20);
+            margin: 0;
+        }
+
+        .footer-links {
+            display: flex;
+            gap: 2rem;
+        }
+
+        .footer-links a {
+            color: var(--text-color, #171a20);
+            text-decoration: none;
+            font-size: 0.9rem;
+            transition: color 0.3s ease;
+        }
+
+        .footer-links a:hover {
+            color: var(--accent-color, #666);
+        }
+
+        /* Dark mode updates */
+        @media (prefers-color-scheme: dark) {
+            .navbar {
+                background: rgba(23, 26, 32, 0.95);
+            }
+            
+            .nav-links a,
+            .nav-icon {
+                color: var(--text-color-dark, #fff);
+            }
+
+            footer {
+                background: rgba(23, 26, 32, 0.95);
+                border-top: 1px solid rgba(255, 255, 255, 0.1);
+            }
+
+            .copyright,
+            .footer-links a {
+                color: var(--text-color-dark, #fff);
+            }
+        }
+
+        /* Responsive adjustments */
+        @media (max-width: 768px) {
+            .nav-links {
+                gap: 1rem;
+            }
+            
+            .right-nav {
+                right: 1rem;
+            }
+
+            footer {
+                padding: 0.75rem 1rem;
+            }
+
+            .footer-content {
+                flex-direction: column;
+                gap: 0.5rem;
+                text-align: center;
+            }
+
+            .footer-links {
+                gap: 1rem;
+            }
+        }
+    </style>
+</body>
+</html> 

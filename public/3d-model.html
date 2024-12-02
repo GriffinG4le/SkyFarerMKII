@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aircraft 3D Model Viewer - SkyFarer MK II</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="css/3d-viewer.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/loaders/GLTFLoader.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
+</head>
+<body>
+    <header>
+        <nav class="navbar">
+            <a href="index.html" class="logo">SkyFarer</a>
+            <div class="nav-links">
+                <a href="index.html">Home</a>
+                <a href="3d-model.html" class="active">Fleet</a>
+                <a href="mission.html">Mission</a>
+            </div>
+            <div class="right-nav">
+                <a href="contact.html" class="contact-link">Contact</a>
+                <a href="#support" class="nav-icon" title="Support">
+                    <i class="fa-regular fa-circle-question"></i>
+                </a>
+                <a href="#account" class="nav-icon" title="Account">
+                    <i class="fa-regular fa-circle-user"></i>
+                </a>
+            </div>
+        </nav>
+    </header>
+
+    <main>
+        <div id="model-container">
+            <div class="model-selector">
+                <select id="model-selector">
+                    <option value="">Select Aircraft</option>
+                    <option value="caravan">Cessna Caravan 208</option>
+                    <option value="eurocopter">Eurocopter EC665 Tiger</option>
+                    <option value="falcon">Dassault Falcon 50</option>
+                    <option value="pilatus">Pilatus PC-12</option>
+                    <option value="raven">Robinson R44 Raven</option>
+                </select>
+            </div>
+            
+            <div class="aircraft-info">
+                <h2 id="aircraft-name">Select an Aircraft</h2>
+                <p id="aircraft-type">Type: --</p>
+                <p id="aircraft-range">Range: --</p>
+                <p id="aircraft-speed">Speed: --</p>
+                <p id="aircraft-capacity">Capacity: --</p>
+                <button onclick="window.location.href='purchase.html'" class="cta-primary">Configure & Purchase</button>
+            </div>
+
+            <div class="controls">
+                <button id="rotate-left">⟲ Rotate Left</button>
+                <button id="reset-view">Reset View</button>
+                <button id="rotate-right">⟳ Rotate Right</button>
+            </div>
+
+            <div id="loading" class="loading-overlay">Loading Model...</div>
+        </div>
+    </main>
+
+    <footer>
+        <div class="footer-content">
+            <p class="copyright">&copy; 2024 Gale Industries. All rights reserved.</p>
+            <div class="footer-links">
+                <a href="#privacy">Privacy</a>
+                <a href="#terms">Terms</a>
+                <a href="faq.html">FAQ</a>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Aircraft data
+        const AIRCRAFT_CATALOG = {
+            caravan: {
+                name: "Cessna Caravan 208",
+                modelPath: "models/caravanwzip.glb",
+                range: 1070,
+                cruisingSpeed: 186,
+                passengerCapacity: 14,
+                type: "Turboprop",
+                manufacturer: "Cessna"
+            },
+            eurocopter: {
+                name: "Eurocopter EC665 Tiger",
+                modelPath: "models/eurocopter_ec665_tigre.glb",
+                range: 430,
+                cruisingSpeed: 162,
+                passengerCapacity: 2,
+                type: "Military Helicopter",
+                manufacturer: "Airbus Helicopters"
+            },
+            falcon: {
+                name: "Dassault Falcon 50",
+                modelPath: "models/falcon50zip.glb",
+                range: 3000,
+                cruisingSpeed: 470,
+                passengerCapacity: 9,
+                type: "Business Jet",
+                manufacturer: "Dassault"
+            },
+            pilatus: {
+                name: "Pilatus PC-12",
+                modelPath: "models/pilatus_pc_1247.glb",
+                range: 1560,
+                cruisingSpeed: 280,
+                passengerCapacity: 9,
+                type: "Turboprop",
+                manufacturer: "Pilatus"
+            },
+            raven: {
+                name: "Robinson R44 Raven",
+                modelPath: "models/ravenzip.glb",
+                range: 300,
+                cruisingSpeed: 113,
+                passengerCapacity: 4,
+                type: "Light Helicopter",
+                manufacturer: "Robinson"
+            }
+        };
+
+        // Initialize Three.js scene
+        let scene, camera, renderer, controls, currentModel;
+
+        function init() {
+            // Create scene
+            scene = new THREE.Scene();
+            scene.background = new THREE.Color(0x000000);
+
+            // Create camera
+            camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+            camera.position.z = 5;
+
+            // Create renderer
+            renderer = new THREE.WebGLRenderer({ antialias: true });
+            renderer.setSize(window.innerWidth, window.innerHeight);
+            document.getElementById('model-container').appendChild(renderer.domElement);
+
+            // Add lights
+            const ambientLight = new THREE.AmbientLight(0xffffff, 0.5);
+            scene.add(ambientLight);
+
+            const directionalLight = new THREE.DirectionalLight(0xffffff, 1);
+            directionalLight.position.set(5, 5, 5);
+            scene.add(directionalLight);
+
+            // Add controls
+            controls = new THREE.OrbitControls(camera, renderer.domElement);
+            controls.enableDamping = true;
+            controls.dampingFactor = 0.05;
+
+            // Handle window resize
+            window.addEventListener('resize', onWindowResize, false);
+
+            // Add control buttons functionality
+            document.getElementById('rotate-left').addEventListener('click', () => {
+                if (currentModel) currentModel.rotation.y += Math.PI / 4;
+            });
+
+            document.getElementById('rotate-right').addEventListener('click', () => {
+                if (currentModel) currentModel.rotation.y -= Math.PI / 4;
+            });
+
+            document.getElementById('reset-view').addEventListener('click', resetView);
+        }
+
+        function onWindowResize() {
+            camera.aspect = window.innerWidth / window.innerHeight;
+            camera.updateProjectionMatrix();
+            renderer.setSize(window.innerWidth, window.innerHeight);
+        }
+
+        function resetView() {
+            camera.position.set(0, 0, 5);
+            controls.reset();
+        }
+
+        function loadModel(modelPath) {
+            const loader = new THREE.GLTFLoader();
+            document.getElementById('loading').style.display = 'flex';
+
+            // Remove current model if it exists
+            if (currentModel) scene.remove(currentModel);
+
+            loader.load(modelPath, (gltf) => {
+                currentModel = gltf.scene;
+                
+                // Center and scale the model
+                const box = new THREE.Box3().setFromObject(currentModel);
+                const center = box.getCenter(new THREE.Vector3());
+                const size = box.getSize(new THREE.Vector3());
+                const maxDim = Math.max(size.x, size.y, size.z);
+                const scale = 2 / maxDim;
+                
+                currentModel.scale.setScalar(scale);
+                currentModel.position.sub(center.multiplyScalar(scale));
+                
+                scene.add(currentModel);
+                document.getElementById('loading').style.display = 'none';
+                resetView();
+            }, undefined, (error) => {
+                console.error('Error loading model:', error);
+                document.getElementById('loading').textContent = 'Error loading model';
+            });
+        }
+
+        function animate() {
+            requestAnimationFrame(animate);
+            controls.update();
+            renderer.render(scene, camera);
+        }
+
+        // Initialize scene
+        init();
+        animate();
+
+        // Update aircraft info and load model
+        function updateAircraftInfo(aircraft) {
+            document.getElementById('aircraft-name').textContent = aircraft.name;
+            document.getElementById('aircraft-type').textContent = `Type: ${aircraft.type}`;
+            document.getElementById('aircraft-range').textContent = `Range: ${aircraft.range} nm`;
+            document.getElementById('aircraft-speed').textContent = `Speed: ${aircraft.cruisingSpeed} kts`;
+            document.getElementById('aircraft-capacity').textContent = 
+                `Capacity: ${aircraft.passengerCapacity} passengers`;
+            
+            loadModel(aircraft.modelPath);
+        }
+
+        // Handle model selection
+        document.getElementById('model-selector').addEventListener('change', (e) => {
+            const selectedAircraft = AIRCRAFT_CATALOG[e.target.value];
+            if (selectedAircraft) {
+                updateAircraftInfo(selectedAircraft);
+            }
+        });
+    </script>
+</body>
+</html> 

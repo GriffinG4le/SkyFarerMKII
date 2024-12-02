@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SkyFarer MK II - Plan Your Route</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <script src='https://api.mapbox.com/mapbox-gl-js/v2.9.1/mapbox-gl.js'></script>
+    <link href='https://api.mapbox.com/mapbox-gl-js/v2.9.1/mapbox-gl.css' rel='stylesheet' />
+    <script src="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v5.0.0/mapbox-gl-geocoder.min.js"></script>
+    <link rel="stylesheet" href="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v5.0.0/mapbox-gl-geocoder.css" type="text/css">
+</head>
+<body>
+    <header>
+        <nav class="navbar">
+            <a href="index.html" class="logo">SkyFarer</a>
+            <div class="nav-links">
+                <a href="index.html">Home</a>
+                <a href="3d-model.html">Fleet</a>
+                <a href="mission.html">Mission</a>
+            </div>
+            <div class="right-nav">
+                <a href="contact.html" class="contact-link">Contact</a>
+                <a href="#support" class="nav-icon" title="Support">
+                    <i class="fa-regular fa-circle-question"></i>
+                </a>
+                <a href="#account" class="nav-icon" title="Account">
+                    <i class="fa-regular fa-circle-user"></i>
+                </a>
+            </div>
+        </nav>
+    </header>
+
+    <main class="purchase-page">
+        <section class="purchase-hero">
+            <h1>Plan Your Journey</h1>
+            <p>Map your route and find the perfect aircraft for your needs</p>
+            <div class="map-controls-buttons">
+                <button id="add-waypoint" class="map-btn">
+                    <i class="fas fa-plus"></i> Add Waypoint
+                </button>
+                <button id="clear-route" class="map-btn">
+                    <i class="fas fa-trash"></i> Clear Route
+                </button>
+            </div>
+        </section>
+
+        <section class="search-filters">
+            <div class="filter-container">
+                <div class="filter-group">
+                    <label>Budget Range</label>
+                    <input type="range" id="budget-slider" min="5" max="50" step="5" value="20">
+                    <div class="range-values">
+                        <span id="budget-min">$5M</span>
+                        <span id="budget-value">$20M</span>
+                        <span id="budget-max">$50M</span>
+                    </div>
+                </div>
+
+                <div class="filter-group">
+                    <label>Required Range</label>
+                    <input type="number" id="required-range" min="100" placeholder="Enter distance in nautical miles">
+                </div>
+
+                <div class="filter-group">
+                    <label>Passenger Count</label>
+                    <input type="number" id="passenger-count" min="1" max="19" value="4">
+                </div>
+
+                <div class="filter-group">
+                    <label>Flight Hours (Annual)</label>
+                    <input type="number" id="flight-hours" min="50" max="1000" value="200">
+                </div>
+
+                <button class="search-btn" onclick="window.location.href='3d-model.html'">View Available Aircraft</button>
+            </div>
+        </section>
+
+        <section class="flight-route-visualizer">
+            <div class="route-container">
+                <div class="map-controls">
+                    <div id="geocoder-origin" class="geocoder"></div>
+                    <div id="geocoder-destination" class="geocoder"></div>
+                </div>
+                <div id="map"></div>
+                <div class="route-info">
+                    <h3>Flight Route Details</h3>
+                    <div class="route-stats">
+                        <div class="stat">
+                            <i class="fas fa-plane-departure"></i>
+                            <span>Origin</span>
+                            <strong id="origin">Select City</strong>
+                        </div>
+                        <div class="stat">
+                            <i class="fas fa-plane-arrival"></i>
+                            <span>Destination</span>
+                            <strong id="destination">Select City</strong>
+                        </div>
+                        <div class="stat">
+                            <i class="fas fa-route"></i>
+                            <span>Total Distance</span>
+                            <strong id="distance">-</strong>
+                        </div>
+                        <div class="stat">
+                            <i class="fas fa-clock"></i>
+                            <span>Est. Flight Time</span>
+                            <strong id="flight-time">-</strong>
+                        </div>
+                        <div class="stat">
+                            <i class="fas fa-gas-pump"></i>
+                            <span>Fuel Required</span>
+                            <strong id="fuel-estimate">-</strong>
+                        </div>
+                    </div>
+                    <div class="waypoints-list" id="waypoints-list">
+                        <!-- Waypoints will be listed here -->
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="footer-content">
+            <p class="copyright">&copy; 2024 Gale Industries. All rights reserved.</p>
+            <div class="footer-links">
+                <a href="#privacy">Privacy</a>
+                <a href="#terms">Terms</a>
+                <a href="faq.html">FAQ</a>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Initialize Mapbox with your token
+        mapboxgl.accessToken = 'your_mapbox_token';
+
+        // Initialize map
+        const map = new mapboxgl.Map({
+            container: 'map',
+            style: 'mapbox://styles/mapbox/dark-v10',
+            center: [0, 20],
+            zoom: 1.5
+        });
+
+        // Initialize geocoders for origin and destination
+        const geocoder = new MapboxGeocoder({
+            accessToken: mapboxgl.accessToken,
+            mapboxgl: mapboxgl,
+            placeholder: 'Search for a city'
+        });
+
+        // Add geocoders to the map
+        document.getElementById('geocoder-origin').appendChild(geocoder.onAdd(map));
+        document.getElementById('geocoder-destination').appendChild(geocoder.onAdd(map));
+
+        // Initialize waypoints array
+        let waypoints = [];
+
+        // Add waypoint functionality
+        document.getElementById('add-waypoint').addEventListener('click', () => {
+            // Add waypoint logic here
+        });
+
+        // Clear route functionality
+        document.getElementById('clear-route').addEventListener('click', () => {
+            waypoints = [];
+            updateRouteDisplay();
+        });
+
+        function updateRouteDisplay() {
+            // Update route visualization and stats
+        }
+
+        // Update route when cities are selected
+        geocoder.on('result', (e) => {
+            // Update route logic here
+        });
+    </script>
+</body>
+</html> 

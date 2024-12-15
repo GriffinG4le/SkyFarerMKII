@@ -1,0 +1,645 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SkyFarer Fleet - 3D Models</title>
+    <link rel="stylesheet" href="./styles.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <script type="importmap">
+    {
+        "imports": {
+            "three": "https://unpkg.com/three@0.160.1/build/three.module.js",
+            "three/addons/": "https://unpkg.com/three@0.160.1/examples/jsm/",
+            "gsap": "https://unpkg.com/gsap@3.12.5/dist/gsap.min.js"
+        }
+    }
+    </script>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            background: #e8e8ea;
+            overflow: hidden;
+        }
+
+        .navbar {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            background: rgba(255, 255, 255, 0.8);
+            padding: 1rem 2rem;
+            z-index: 1000;
+            backdrop-filter: blur(10px);
+        }
+
+        .nav-links a {
+            color: #1a1a1a;
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s ease;
+        }
+
+        .nav-links a:hover {
+            color: #666;
+        }
+
+        .logo {
+            color: #1a1a1a;
+            text-decoration: none;
+            font-weight: 700;
+            font-size: 1.2rem;
+        }
+
+        .model-page {
+            position: relative;
+            width: 100vw;
+            height: 100vh;
+        }
+
+        #model-container {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background: rgba(0, 0, 0, 0.05);
+            border-radius: 15px;
+            position: relative;
+            z-index: 1;
+        }
+
+        #model-info {
+            position: fixed;
+            top: 50%;
+            right: 2rem;
+            transform: translateY(-50%);
+            padding: 2rem;
+            background: rgba(26, 26, 26, 0.8);
+            backdrop-filter: blur(10px);
+            border-radius: 15px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+            overflow-y: auto;
+            max-height: 80vh;
+            width: 400px;
+            z-index: 2;
+            color: white;
+        }
+
+        #model-info h2 {
+            margin-bottom: 2rem;
+            font-size: 2rem;
+            color: white;
+        }
+
+        #model-info h3 {
+            font-size: 1.2rem;
+            margin-bottom: 0.5rem;
+            color: white;
+        }
+
+        #model-info p {
+            margin: 1rem 0;
+            font-size: 1.1rem;
+            color: rgba(255, 255, 255, 0.8);
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        #model-info p:before {
+            font-family: "Font Awesome 6 Free";
+            font-weight: 900;
+            color: white;
+        }
+
+        #model-info p:nth-child(2):before {
+            content: "\f07e"; /* Range icon */
+        }
+
+        #model-info p:nth-child(3):before {
+            content: "\f0c0"; /* Capacity icon */
+        }
+
+        #model-info p:nth-child(4):before {
+            content: "\f625"; /* Speed icon */
+        }
+
+        @media (prefers-color-scheme: dark) {
+            #model-info {
+                background: #1a1a1a;
+                color: #fff;
+            }
+
+            #model-info h2 {
+                color: #fff;
+            }
+
+            #model-info p {
+                color: #ccc;
+            }
+
+            #model-info p:before {
+                color: #fff;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .model-page {
+                grid-template-columns: 1fr;
+                height: auto;
+            }
+
+            #model-container {
+                height: 60vh;
+            }
+        }
+
+        .view-controls {
+            position: fixed;
+            bottom: 2rem;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 1000;
+            display: flex;
+            gap: 1rem;
+            background: rgba(26, 26, 26, 0.8);
+            padding: 1rem;
+            border-radius: 10px;
+            backdrop-filter: blur(10px);
+        }
+
+        .view-btn {
+            padding: 0.8rem;
+            border: none;
+            border-radius: 50%;
+            background: #1a1a1a;
+            color: white;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .view-btn:hover {
+            background: #333;
+            transform: translateY(-2px);
+        }
+
+        #model-info {
+            display: grid;
+            gap: 1.5rem;
+        }
+
+        .info-section {
+            border-bottom: 1px solid rgba(255,255,255,0.2);
+            padding-bottom: 1rem;
+        }
+
+        .info-section:last-child {
+            border-bottom: none;
+        }
+
+        @media (prefers-color-scheme: dark) {
+            .view-btn {
+                background: #fff;
+                color: #1a1a1a;
+            }
+
+            .view-btn:hover {
+                background: #ccc;
+            }
+
+            .info-section {
+                border-bottom-color: rgba(255,255,255,0.1);
+            }
+
+            .info-section h3 {
+                color: #fff;
+            }
+        }
+
+        .model-selector {
+            position: relative;
+            cursor: pointer;
+        }
+
+        .model-selector h2 {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin: 0;
+            padding: 1rem 0;
+        }
+
+        .model-selector h2:after {
+            content: '\f107';
+            font-family: "Font Awesome 6 Free";
+            font-weight: 900;
+            transition: transform 0.3s ease;
+        }
+
+        .model-selector.active h2:after {
+            transform: rotate(180deg);
+        }
+
+        .model-list {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            right: 0;
+            background: rgba(26, 26, 26, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 10px;
+            padding: 0.5rem;
+            display: none;
+            flex-direction: column;
+            gap: 0.5rem;
+            z-index: 10;
+        }
+
+        .model-selector.active .model-list {
+            display: flex;
+        }
+
+        .model-option {
+            padding: 0.75rem 1rem;
+            border: none;
+            background: none;
+            color: white;
+            text-align: left;
+            cursor: pointer;
+            border-radius: 5px;
+            transition: background-color 0.3s ease;
+        }
+
+        .model-option:hover {
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .model-header {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            justify-content: space-between;
+            margin: 0;
+            padding: 1rem 0;
+        }
+
+        .model-nav {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .model-nav-btn {
+            background: none;
+            border: none;
+            color: white;
+            cursor: pointer;
+            font-size: 1.5rem;
+            padding: 0.5rem;
+            transition: transform 0.3s ease;
+        }
+
+        .model-nav-btn:hover {
+            transform: scale(1.2);
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <nav class="navbar">
+            <a href="./index.html" class="logo">SkyFarer</a>
+            <div class="nav-links">
+                <a href="./index.html">Home</a>
+                <a href="./mission.html">Mission</a>
+                <a href="./contact.html">Contact</a>
+            </div>
+        </nav>
+    </header>
+
+    <main class="model-page">
+        <div class="view-controls">
+            <button class="view-btn" data-view="left" title="View Left">
+                <i class="fas fa-arrow-left"></i>
+            </button>
+            <button class="view-btn" data-view="reset" title="Reset View">
+                <i class="fas fa-sync"></i>
+            </button>
+            <button class="view-btn" data-view="right" title="View Right">
+                <i class="fas fa-arrow-right"></i>
+            </button>
+        </div>
+        <div id="model-container"></div>
+        <div id="model-info"></div>
+    </main>
+
+    <script type="module">
+        import * as THREE from 'three';
+        import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
+        import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
+
+        let currentModel;
+        const modelInfo = {
+            caravanwzip: {
+                name: "Cessna Caravan",
+                specs: {
+                    range: "1,070 nautical miles",
+                    capacity: "14 passengers",
+                    speed: "186 knots",
+                    maxLoad: "3,305 lbs",
+                    ceiling: "25,000 feet",
+                    engineType: "PT6A-114A turboprop"
+                },
+                dimensions: {
+                    length: "41 ft 7 in",
+                    wingspan: "52 ft 1 in",
+                    height: "14 ft 11 in"
+                },
+                performance: {
+                    cruiseSpeed: "186 KTAS",
+                    maxRange: "1,070 nm",
+                    maxAltitude: "25,000 ft",
+                    maxSpeed: "470 knots"
+                }
+            },
+            eurocopter_ec665_tigre: {
+                name: "Eurocopter Tiger",
+                specs: {
+                    range: "430 nautical miles",
+                    capacity: "2 crew",
+                    speed: "169 knots",
+                    maxLoad: "3,305 lbs",
+                    ceiling: "25,000 feet",
+                    engineType: "PT6A-114A turboprop"
+                },
+                dimensions: {
+                    length: "41 ft 7 in",
+                    wingspan: "52 ft 1 in",
+                    height: "14 ft 11 in"
+                },
+                performance: {
+                    cruiseSpeed: "186 KTAS",
+                    maxRange: "1,070 nm",
+                    maxAltitude: "25,000 ft",
+                    maxSpeed: "470 knots"
+                }
+            },
+            falcon50zip: {
+                name: "Dassault Falcon 50",
+                specs: {
+                    range: "3,450 nautical miles",
+                    capacity: "9 passengers",
+                    speed: "470 knots",
+                    maxLoad: "3,305 lbs",
+                    ceiling: "25,000 feet",
+                    engineType: "PT6A-114A turboprop"
+                },
+                dimensions: {
+                    length: "41 ft 7 in",
+                    wingspan: "52 ft 1 in",
+                    height: "14 ft 11 in"
+                },
+                performance: {
+                    cruiseSpeed: "186 KTAS",
+                    maxRange: "1,070 nm",
+                    maxAltitude: "25,000 ft",
+                    maxSpeed: "470 knots"
+                }
+            },
+            pilatus_pc_1247: {
+                name: "Pilatus PC-12",
+                specs: {
+                    range: "1,845 nautical miles",
+                    capacity: "9 passengers",
+                    speed: "290 knots",
+                    maxLoad: "3,305 lbs",
+                    ceiling: "25,000 feet",
+                    engineType: "PT6A-114A turboprop"
+                },
+                dimensions: {
+                    length: "41 ft 7 in",
+                    wingspan: "52 ft 1 in",
+                    height: "14 ft 11 in"
+                },
+                performance: {
+                    cruiseSpeed: "186 KTAS",
+                    maxRange: "1,070 nm",
+                    maxAltitude: "25,000 ft",
+                    maxSpeed: "470 knots"
+                }
+            },
+            ravenzip: {
+                name: "Raven Aircraft",
+                specs: {
+                    range: "800 nautical miles",
+                    capacity: "4 passengers",
+                    speed: "250 knots",
+                    maxLoad: "3,305 lbs",
+                    ceiling: "25,000 feet",
+                    engineType: "PT6A-114A turboprop"
+                },
+                dimensions: {
+                    length: "41 ft 7 in",
+                    wingspan: "52 ft 1 in",
+                    height: "14 ft 11 in"
+                },
+                performance: {
+                    cruiseSpeed: "186 KTAS",
+                    maxRange: "1,070 nm",
+                    maxAltitude: "25,000 ft",
+                    maxSpeed: "470 knots"
+                }
+            }
+        };
+
+        // Scene setup
+        const scene = new THREE.Scene();
+        scene.background = new THREE.Color(0xe8e8ea);
+
+        const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+        camera.position.set(4.33, 1.5, 4.33);
+        camera.lookAt(0, 0, 0);
+
+        const renderer = new THREE.WebGLRenderer({ antialias: true });
+        const container = document.getElementById('model-container');
+        renderer.setSize(container.clientWidth, container.clientHeight);
+        document.getElementById('model-container').appendChild(renderer.domElement);
+
+        // Lighting
+        const ambientLight = new THREE.AmbientLight(0xffffff, 0.5);
+        scene.add(ambientLight);
+
+        const directionalLight = new THREE.DirectionalLight(0xffffff, 1);
+        directionalLight.position.set(5, 5, 5);
+        scene.add(directionalLight);
+
+        // Controls
+        const controls = new OrbitControls(camera, renderer.domElement);
+        controls.enableDamping = true;
+
+        // Model loading
+        const loader = new GLTFLoader();
+
+        const models = ['caravanwzip', 'eurocopter_ec665_tigre', 'falcon50zip', 'pilatus_pc_1247', 'ravenzip'];
+        let currentModelIndex = 0;
+
+        // Floating animation parameters
+        const floatingAnimation = {
+            height: 0.05,
+            speed: 0.050,
+            time: 0
+        };
+
+        function loadModel(modelName) {
+            currentModelIndex = models.indexOf(modelName);
+            // Clear any existing models from the scene
+            scene.traverse((child) => {
+                if (child.type === 'Group' || child.type === 'Object3D') {
+                    scene.remove(child);
+                }
+            });
+
+            loader.load(`/models/${modelName}.glb`, (gltf) => {
+                currentModel = gltf.scene;
+                scene.add(currentModel);
+
+                // Update model info
+                const info = modelInfo[modelName];
+                document.getElementById('model-info').innerHTML = `
+                    <div class="info-section">
+                        <div class="model-header">
+                            <button class="model-nav-btn prev-model">
+                                <i class="fas fa-chevron-left"></i>
+                            </button>
+                            <h2>${info.name}</h2>
+                            <button class="model-nav-btn next-model">
+                                <i class="fas fa-chevron-right"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="info-section">
+                        <h3>Specifications</h3>
+                        <p><i class="fas fa-plane"></i> Range: ${info.specs.range}</p>
+                        <p><i class="fas fa-users"></i> Capacity: ${info.specs.capacity}</p>
+                        <p><i class="fas fa-gauge-high"></i> Speed: ${info.specs.speed}</p>
+                        <p><i class="fas fa-weight-hanging"></i> Max Load: ${info.specs.maxLoad}</p>
+                        <p><i class="fas fa-cloud"></i> Service Ceiling: ${info.specs.ceiling}</p>
+                        <p><i class="fas fa-cog"></i> Engine: ${info.specs.engineType}</p>
+                    </div>
+                    <div class="info-section">
+                        <h3>Dimensions</h3>
+                        <p><i class="fas fa-ruler-horizontal"></i> Length: ${info.dimensions.length}</p>
+                        <p><i class="fas fa-ruler-combined"></i> Wingspan: ${info.dimensions.wingspan}</p>
+                        <p><i class="fas fa-ruler-vertical"></i> Height: ${info.dimensions.height}</p>
+                    </div>
+                    <div class="info-section">
+                        <h3>Performance</h3>
+                        <p><i class="fas fa-tachometer-alt"></i> Cruise Speed: ${info.performance.cruiseSpeed}</p>
+                        <p><i class="fas fa-plane-departure"></i> Maximum Range: ${info.performance.maxRange}</p>
+                        <p><i class="fas fa-arrow-up"></i> Maximum Altitude: ${info.performance.maxAltitude}</p>
+                        <p><i class="fas fa-bolt"></i> Maximum Speed: ${info.performance.maxSpeed}</p>
+                    </div>
+                `;
+
+                // Center and scale model
+                const box = new THREE.Box3().setFromObject(currentModel);
+                const center = box.getCenter(new THREE.Vector3());
+                const size = box.getSize(new THREE.Vector3());
+                
+                const maxDim = Math.max(size.x, size.y, size.z);
+                const scale = 3 / maxDim;
+                currentModel.scale.setScalar(scale);
+                
+                currentModel.position.sub(center.multiplyScalar(scale));
+                
+                // Rotate model to face camera at an angle
+                currentModel.rotation.y = THREE.MathUtils.degToRad(150);
+
+                setupModelNavigation();
+            });
+        }
+
+        function setupModelNavigation() {
+            const prevBtn = document.querySelector('.prev-model');
+            const nextBtn = document.querySelector('.next-model');
+
+            prevBtn.addEventListener('click', () => {
+                currentModelIndex = (currentModelIndex - 1 + models.length) % models.length;
+                loadModel(models[currentModelIndex]);
+            });
+
+            nextBtn.addEventListener('click', () => {
+                currentModelIndex = (currentModelIndex + 1) % models.length;
+                loadModel(models[currentModelIndex]);
+            });
+        }
+
+        // Button event listeners
+        let defaultCameraPosition;
+        
+        // View control buttons
+        document.querySelectorAll('.view-btn').forEach(button => {
+            button.addEventListener('click', () => {
+                const view = button.dataset.view;
+                if (!defaultCameraPosition) {
+                    defaultCameraPosition = {
+                        position: { x: 0, y: 0, z: 5 },
+                        rotation: camera.rotation.clone()
+                    };
+                }
+                
+                switch(view) {
+                    case 'left':
+                        camera.position.set(-5, 1.5, 0);
+                        currentModel.rotation.y = THREE.MathUtils.degToRad(90);
+                        break;
+                    case 'right':
+                        camera.position.set(5, 1.5, 0);
+                        currentModel.rotation.y = THREE.MathUtils.degToRad(270);
+                        break;
+                    case 'reset':
+                        camera.position.set(4.33, 1.5, 4.33);
+                        currentModel.rotation.y = THREE.MathUtils.degToRad(150);
+                        break;
+                }
+                camera.lookAt(0, 0, 0);
+                controls.update();
+            });
+        });
+
+        // Animation loop
+        function animate() {
+            requestAnimationFrame(animate);
+            // Update floating animation
+            if (currentModel) {
+                floatingAnimation.time += floatingAnimation.speed;
+                const floatHeight = Math.sin(floatingAnimation.time) * floatingAnimation.height;
+                currentModel.position.y = floatHeight;
+            }
+            controls.update();
+            renderer.render(scene, camera);
+        }
+        animate();
+
+        // Load initial model
+        loadModel('caravanwzip');
+
+        // Handle window resize
+        window.addEventListener('resize', () => {
+            camera.aspect = window.innerWidth / window.innerHeight;
+            camera.updateProjectionMatrix();
+            renderer.setSize(window.innerWidth, window.innerHeight);
+        });
+    </script>
+</body>
+</html> 
